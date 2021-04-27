@@ -1,0 +1,51 @@
+---
+
+- name: Set up a local isolated vm for colte development
+  hosts: ['colte']
+  become: yes
+
+  tasks:
+    - name: Install mongo key
+      apt_key:
+        url: "https://www.mongodb.org/static/pgp/server-4.2.asc"
+        state: present
+
+    - name: Install mongo repo
+      apt_repository:
+        repo: "deb http://repo.mongodb.org/apt/debian buster/mongodb-org/4.2 main"
+        state: present
+
+    - name: Install open5gs OBS key
+      apt_key:
+        url: "https://download.opensuse.org/repositories/home:/acetcom:/open5gs:/latest/Debian_10/Release.key"
+        state: present
+
+    - name: Install open5gs OBS repo
+      apt_repository:
+        repo: "deb http://download.opensuse.org/repositories/home:/acetcom:/open5gs:/latest/Debian_10/ ./"
+        state: present
+
+    - name: Install utilities for terminal interaction
+      apt:
+        pkg: ['ccze', 'tmux', 'python3-dev', 'emacs-nox', 'usbutils']
+        state: present
+        update_cache: yes
+        cache_valid_time: 600
+
+    - name: Copy Tmux Config
+      copy:
+        src: "files/tmux.conf"
+        dest: "/home/vagrant/.tmux.conf"
+        remote_src: no
+
+    - name: Install deb prereqs
+      apt:
+        pkg: ["mongodb-org", "libpcap0.8"]
+        state: latest
+        update_cache: no
+
+    - name: Add missing soname link
+      file:
+        src: "/usr/lib/x86_64-linux-gnu/libpcap.so.1.8.1"
+        dest: "/usr/lib/x86_64-linux-gnu/libpcap.so.1"
+        state: link
