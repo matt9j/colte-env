@@ -32,13 +32,7 @@
       apt_repository:
         repo: "ppa:open5gs/latest"
         state: present
-      when: ansible_distribution_release == "bionic"
-
-    - name: Install open5gs PPA
-      apt_repository:
-        repo: "ppa:open5gs/latest"
-        state: present
-      when: ansible_distribution_release == "focal"
+      when: ansible_distribution_release == "bionic" or ansible_distribution_release == "focal"
 
     - name: Install colte key
       apt_key:
