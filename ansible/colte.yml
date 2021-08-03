@@ -56,3 +56,8 @@
         src: "files/tmux.conf"
         dest: "/home/vagrant/.tmux.conf"
         remote_src: no
+
+    - name: Install build utilities
+      apt:
+        pkg: ['devscripts']
+        state: present
