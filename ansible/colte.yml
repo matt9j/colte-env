@@ -1,7 +1,7 @@
 ---
 
 - name: Set up a local isolated vm for colte development
-  hosts: ['colte']
+  hosts: ['colte', 'colteBionic', 'colteFocal']
   become: yes
 
   tasks:
@@ -14,15 +14,40 @@
       apt_repository:
         repo: "deb http://repo.mongodb.org/apt/debian buster/mongodb-org/4.2 main"
         state: present
+      when: ansible_distribution_release == "buster"
 
     - name: Install open5gs OBS key
       apt_key:
         url: "https://download.opensuse.org/repositories/home:/acetcom:/open5gs:/latest/Debian_10/Release.key"
         state: present
+      when: ansible_distribution_release == "buster"
 
     - name: Install open5gs OBS repo
       apt_repository:
         repo: "deb http://download.opensuse.org/repositories/home:/acetcom:/open5gs:/latest/Debian_10/ ./"
+        state: present
+      when: ansible_distribution_release == "buster"
+
+    - name: Install open5gs PPA
+      apt_repository:
+        repo: "ppa:open5gs/latest"
+        state: present
+      when: ansible_distribution_release == "bionic"
+
+    - name: Install open5gs PPA
+      apt_repository:
+        repo: "ppa:open5gs/latest"
+        state: present
+      when: ansible_distribution_release == "focal"
+
+    - name: Install colte key
+      apt_key:
+        url: "http://colte.cs.washington.edu/colte-archive-keyring.gpg"
+        state: present
+
+    - name: Install colte repo
+      apt_repository:
+        repo: "deb http://colte.cs.washington.edu {{ ansible_distribution_release }} main"
         state: present
 
     - name: Install utilities for terminal interaction
@@ -37,15 +62,3 @@
         src: "files/tmux.conf"
         dest: "/home/vagrant/.tmux.conf"
         remote_src: no
-
-    - name: Install deb prereqs
-      apt:
-        pkg: ["mongodb-org", "libpcap0.8"]
-        state: latest
-        update_cache: no
-
-    - name: Add missing soname link
-      file:
-        src: "/usr/lib/x86_64-linux-gnu/libpcap.so.1.8.1"
-        dest: "/usr/lib/x86_64-linux-gnu/libpcap.so.1"
-        state: link

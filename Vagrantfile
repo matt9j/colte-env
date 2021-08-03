@@ -12,6 +12,7 @@ Vagrant.configure(2) do |config|
     # Create a private network, which allows host-only access to the machine
     # using a specific IP.
     colte.vm.network "private_network", ip: "192.168.40.200"
+    # colte.vm.network "public_network", ip: "169.254.1.16"
 
     colte.vm.synced_folder "./colte/" , "/home/vagrant/colte", type: "virtualbox"
     colte.vm.synced_folder "./open5gs/" , "/home/vagrant/open5gs", type: "virtualbox"
@@ -35,7 +36,7 @@ Vagrant.configure(2) do |config|
   end
 
 
-  config.vm.define :colteU do |colte|
+  config.vm.define :colteBionic do |colte|
     colte.vm.box = "ubuntu/bionic64"
     colte.vm.hostname = "colteU"
     colte.vm.network "forwarded_port", guest: 3000, host: 6000
@@ -49,6 +50,7 @@ Vagrant.configure(2) do |config|
     colte.vm.synced_folder "./open5gs/" , "/home/vagrant/open5gs", type: "virtualbox"
     colte.vm.synced_folder "./haulage/" , "/home/vagrant/haulage", type: "virtualbox"
     colte.vm.synced_folder "./colte-release/" , "/home/vagrant/colte-release", type: "virtualbox"
+    colte.vm.synced_folder "./S1APTester/" , "/home/vagrant/S1APTester", type: "virtualbox"
 
     colte.vm.provider "virtualbox" do |vb|
       vb.customize ["modifyvm", :id, "--memory", "4096"]
@@ -66,20 +68,21 @@ Vagrant.configure(2) do |config|
 
   end
 
-  config.vm.define :colteS do |colte|
-    colte.vm.box = "debian/contrib-stretch64"
-    colte.vm.hostname = "colteS"
-    colte.vm.network "forwarded_port", guest: 3000, host: 9000
-    colte.vm.network "forwarded_port", guest: 7998, host: 9998
-    colte.vm.network "forwarded_port", guest: 7999, host: 9999
+  config.vm.define :colteFocal do |colte|
+    colte.vm.box = "ubuntu/focal64"
+    colte.vm.hostname = "colteU2"
+    colte.vm.network "forwarded_port", guest: 3000, host: 5000
+    colte.vm.network "forwarded_port", guest: 7998, host: 5998
+    colte.vm.network "forwarded_port", guest: 7999, host: 5999
     # Create a private network, which allows host-only access to the machine
     # using a specific IP.
-    colte.vm.network "private_network", ip: "192.168.42.200"
+    colte.vm.network "private_network", ip: "192.168.43.200"
 
     colte.vm.synced_folder "./colte/" , "/home/vagrant/colte", type: "virtualbox"
     colte.vm.synced_folder "./open5gs/" , "/home/vagrant/open5gs", type: "virtualbox"
     colte.vm.synced_folder "./haulage/" , "/home/vagrant/haulage", type: "virtualbox"
     colte.vm.synced_folder "./colte-release/" , "/home/vagrant/colte-release", type: "virtualbox"
+    colte.vm.synced_folder "./S1APTester/" , "/home/vagrant/S1APTester", type: "virtualbox"
 
     colte.vm.provider "virtualbox" do |vb|
       vb.customize ["modifyvm", :id, "--memory", "4096"]
@@ -96,6 +99,4 @@ Vagrant.configure(2) do |config|
     end
 
   end
-
-
 end
