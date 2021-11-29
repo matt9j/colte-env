@@ -89,7 +89,6 @@ Vagrant.configure(2) do |config|
     colte.vm.synced_folder "./open5gs/" , "/home/vagrant/open5gs", type: "virtualbox"
     colte.vm.synced_folder "./haulage/" , "/home/vagrant/haulage", type: "virtualbox"
     colte.vm.synced_folder "./colte-release/" , "/home/vagrant/colte-release", type: "virtualbox"
-    colte.vm.synced_folder "./S1APTester/" , "/home/vagrant/S1APTester", type: "virtualbox"
 
     colte.vm.provider "virtualbox" do |vb|
       vb.customize ["modifyvm", :id, "--memory", "4096"]
@@ -121,7 +120,6 @@ Vagrant.configure(2) do |config|
     colte.vm.synced_folder "./open5gs/" , "/home/vagrant/open5gs", type: "virtualbox"
     colte.vm.synced_folder "./haulage/" , "/home/vagrant/haulage", type: "virtualbox"
     colte.vm.synced_folder "./colte-release/" , "/home/vagrant/colte-release", type: "virtualbox"
-    colte.vm.synced_folder "./S1APTester/" , "/home/vagrant/S1APTester", type: "virtualbox"
 
     colte.vm.provider "virtualbox" do |vb|
       vb.customize ["modifyvm", :id, "--memory", "4096"]
