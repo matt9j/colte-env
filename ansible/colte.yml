@@ -5,6 +5,13 @@
   become: yes
 
   tasks:
+    - name: Install basic utilities for further actions
+      apt:
+        pkg: ['gpg', 'apt-transport-https']
+        state: present
+        update_cache: yes
+        cache_valid_time: 600
+
     - name: Install mongo key
       apt_key:
         url: "https://www.mongodb.org/static/pgp/server-4.2.asc"
